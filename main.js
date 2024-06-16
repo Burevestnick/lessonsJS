@@ -6,3 +6,4 @@ myConst = 30
 
 console.log(myConst);
 alert("hello world");
+alert("hello");

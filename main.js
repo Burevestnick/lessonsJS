@@ -11,12 +11,11 @@ console.log(screens.length); //длина строки
 
 console.log("Стоимость верстки экранов " + screenPrice + " рублей", "\nСтоимость разработки сайта " + fullPrice + " рублей");
 
-console.log(screens.toLowerCase().split(","));
+console.log(screens.toLowerCase().split(",")); // нижний регистр, разбить в массив по запятой
 
 console.log(fullPrice * (rollback / 100));
 
-// alert(title);
-// console.log("Hello console!");
+
 
 
 

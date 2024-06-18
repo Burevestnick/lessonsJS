@@ -1,12 +1,23 @@
-const title = "lesson 01"
-const screens = "Простые, Сложные, Интерактивные"
-const screenPrice = 451
-const rollback = 74
-const fullPrice = 100000
-const adaptive = true
+let title = "lesson 01"
+let screens = "Простые, Сложные, Интерактивные"
+let screenPrice = 4500
+let rollback = 15
+let fullPrice = 100000
+let adaptive = true
 
-console.log(typeof(title),typeof(fullPrice),typeof(adaptive));
+console.log(typeof(title),typeof(fullPrice),typeof(adaptive)); //тип переменной
 
-alert(title);
-console.log("Hello console!");
+console.log(screens.length); //длина строки
+
+console.log("Стоимость верстки экранов " + screenPrice + " рублей", "\nСтоимость разработки сайта " + fullPrice + " рублей");
+
+console.log(screens.toLowerCase().split(","));
+
+console.log(fullPrice * (rollback / 100));
+
+// alert(title);
+// console.log("Hello console!");
+
+
+
 

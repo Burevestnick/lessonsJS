@@ -28,7 +28,8 @@
   }
 
   function valueSet () {
-    current = prompt("Угадайте число от 1 до 100")
+    alert("Бот загадал число от 1 до 100")
+    current = prompt("Угадайте это число! у вас " + tries + " Попыток")
     valueNull()
   } 
 

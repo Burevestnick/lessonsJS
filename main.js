@@ -1,115 +1,97 @@
-'use strict';
-
-let title
-let screens 
-let screenPrice
-let adaptive 
-let rollback = 15
-let fullPrice 
-let servicePercentPrice 
-let allServicePrices
-let service1 
-let service2 
+ 'use strict'
+ 
 
 
-const isNumber = function(num) {
-  return !isNaN(parseFloat(num)) && isFinite(num)
-}
+ const NumGame = function() {
 
-const asking = function() {
-  title = prompt("Как называется ваш проект?", "   Калькулятор верстКи   ");
-  screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-  while (screens == "" || screens === null) {
-    screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
+  let current
+  let win 
+  let ask
+
+  let tries = 10
+
+  function randomInt(min, max) {
+    let int = min + Math.random() * (max + 1 - min);
+    return win = Math.floor(int);
   }
-   do {
-    screenPrice = prompt("Сколько будет стоить данная работа?", 15000);
-    screenPrice = parseFloat(screenPrice)
-  } while(!isNumber(screenPrice) || screenPrice === null );
 
-  adaptive = confirm("Нужен ли адаптив на сайте?")
-}
-
-const getAllServicePrices = function() {
-  let current = 0
-  let sum = 0
-  for (let i = 0; i < 2; i++) {
-    if (i === 0) {
-      service1 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      while (service1 === null || service1 == "") {
-        service1 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      }
-    } else if (i === 1) {
-      service2 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      while (service2 === null || service2 == "") {
-        service2 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      }
+  function valueNull() {
+    if (current == null) {
+      alert("Игра окончена");
+    } else {
+      valueMatch();
     }
-
-    do {
-      current = prompt("Сколько будет стоить данная работа?", 15000);
-      current = parseFloat(current)
-    } while(!isNumber(current) || current === null );
-    sum = sum + current
   }
-  return sum
-}
 
-const getRollbackMessage = function(price) {
-  switch (true) {
-    case price >= 30000:
-     return "Даем скидку в 10%"
-    case price >= 15000 && price < 30000:
-     return "Даем скидку в 5%"
-    case price > 0 && price < 15000:
-     return "Скидка не предусмотрена"
-    default:
-     return "Что то пошло не так"
+  function isNumber() {
+    return !isNaN(parseFloat(current)) && isFinite(current)
   }
-}
 
+  function valueSet () {
+    current = prompt("Угадайте число от 1 до 100")
+    valueNull()
+  } 
 
-const getFullPrice =  function() {
-  return screenPrice + allServicePrices
-}
+  function valueMore() {
+    tries--
+    current = prompt("Загаданное число больше! У вас осталось, " + tries + " Попыток")
+    valueNull()
+  }
 
-const getTitle = function(title) {
-  title = title.trim().toLowerCase() 
-  title = title[0].toUpperCase() + title.slice(1)
-  return title
-}
+  function valueless() {
+    tries--
+    current = prompt("Загаданное число меньше! У вас осталось, " + tries + " Попыток")
+    valueNull()
+  }
 
-const showTypeOf = function(option) {
-  console.log(option, typeof(option));
-}
+  function valueError() {
+    current = prompt("Введите число!")
+    valueNull()
+  }
 
-const getServicePercentPrices = function() {
- return fullPrice - (fullPrice * (rollback / 100)); 
-}
+  function valueWin() {
+    alert("Поздравляю, Вы угадали!!!");
+    ask = confirm("Хотите попробовать снова?")
+    if (ask == true) {
+      NumGame();
+    } else {
+      alert("Игра окончена")
+    }
+  }
 
-asking();
-allServicePrices = getAllServicePrices();
-fullPrice = getFullPrice();
-servicePercentPrice = getServicePercentPrices();
-title = getTitle(title);
+  function valueLose() {
+    ask = confirm("Попытки закончились, хотите сыграть еще?")
+    if (ask == true) {
+      NumGame();
+    } else {
+      alert("Игра окончена")
+    }
+  }
 
+  function valueMatch() {
+    if (isNumber() == false || current == '') {
+      valueError();
+    } else if (current < win && tries > 1) {
+      valueMore();
+    } else if (current > win && tries > 1) {
+      valueless();
+    } else if (current == win) {
+      valueWin();
+    } else if (tries == 1) {
+      valueLose();
+    }
+  }
+  randomInt(1, 100);
+  valueSet(); 
+ }
 
-showTypeOf(title);
-showTypeOf(screenPrice);
-showTypeOf(adaptive);
+NumGame();
 
-console.log("allServicePrices", allServicePrices);
-console.log(screens);
-console.log(getRollbackMessage(fullPrice));
-console.log("Сумма после октата ",  servicePercentPrice);
-
-
-
-
-
-
-
-
-
-
+// Кол-во попыток пользователя должно быть ограничено: 10
+// — если пользовательское число больше, то бот выводит "Загаданное число меньше, осталось попыток ..." и предлагает ввести новый вариант;
+// — если пользовательское число меньше, то бот выводит "Загаданное число больше, осталось попыток ..." и предлагает ввести новый вариант;
+// — если пользователь вводит правильное число, то бот выводит "Поздравляю, Вы угадали!!! Хотели бы сыграть еще?", при нажатии ОК игра перезапускается (снова 10 попыток и новое загаданное число)
+// — если пользователь ввел не число, то выводит сообщение "Введи число!" и предлагает ввести новый вариант;
+// — если пользователь нажимает "Отмена", то игра выводит прощальное сообщение и завершается.
+// — если закончились попытки то программа сообщает: "Попытки закончились, хотите сыграть еще?"
 

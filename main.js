@@ -3,104 +3,132 @@
 
 const AppData = {
   title: '',
-  screens: '',
+  screens: [],
   screenPrice: 0,
   adaptive: true,
   rollback: 15,
   fullPrice: 0,
   servicePercentPrice: 0,
   allServicePrices: 0,
-  service1: '',
-  service2: '',
-  asking: function() {
-    AppData.title = prompt("Как называется ваш проект?", "   Калькулятор верстКи   ");
-    AppData.screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-    while (AppData.screens == "" || AppData.screens === null) {
-      AppData.screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-    }
-     do {
-      AppData.screenPrice = prompt("Сколько будет стоить данная работа?", 25000);
-      AppData.screenPrice = parseFloat(AppData.screenPrice)
-    } while(!isNumber(AppData.screenPrice) || AppData.screenPrice === null );
+  services: {},
   
-    AppData.adaptive = confirm("Нужен ли адаптив на сайте?")
+  isNumber: function(num) {
+    return !isNaN(parseFloat(num)) && isFinite(num)
   },
+  
+
+  getRollbackMessage: function(price) {
+    switch (true) {
+      case price >= 30000:
+       return "Даем скидку в 10%"
+      case price >= 15000 && price < 30000:
+       return "Даем скидку в 5%"
+      case price > 0 && price < 15000:
+       return "Скидка не предусмотрена"
+      default:
+       return "Что то пошло не так"
+    }
+  },
+  
+  
+  getFullPrice:  function() {
+    AppData.fullPrice = AppData.screenPrice + AppData.allServicePrices
+  },
+  
+  getTitle: function() {
+    AppData.title = AppData.title.trim().toLowerCase() 
+    AppData.title = AppData.title[0].toUpperCase() + AppData.title.slice(1)
+  },
+  
+  getServicePercentPrices: function() {
+   AppData.servicePercentPrice =  AppData.fullPrice - (AppData.fullPrice * (AppData.rollback / 100)); 
+  },
+
   logger: function() {
-    console.log(AppData.fullPrice);
-    console.log(AppData.servicePercentPrice);
     for (let key in AppData) {
       console.log("key: " + key + " " + "value: " + " " + AppData[key]); 
     }
+    console.log(AppData.fullPrice);
+    console.log(AppData.servicePercentPrice);
+    console.log(AppData.services);
+    console.log(AppData.screens);
   },
-  start: function() {
-    AppData.asking();
-    AppData.allServicePrices = getAllServicePrices();
-    AppData.fullPrice = getFullPrice();
-    AppData.servicePercentPrice = getServicePercentPrices();
-    AppData.title = getTitle(AppData.title);
-    AppData.logger()
-  }
-}
 
-const isNumber = function(num) {
-  return !isNaN(parseFloat(num)) && isFinite(num)
-}
+  asking: function() {
+    do {
+      AppData.title = prompt("Как называется ваш проект?", "   Калькулятор верстКи   ");
+    } while (AppData.isNumber(AppData.title) || AppData.title === null || AppData.title.trim() === "")
 
-const getAllServicePrices = function() {
-  let current = 0
-  let sum = 0
-  for (let i = 0; i < 2; i++) {
-    if (i === 0) {
-      AppData.service1 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      while (AppData.service1 === null || AppData.service1 == "") {
-        AppData.service1 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      }
-    } else if (i === 1) {
-      AppData.service2 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      while (AppData.service2 === null || AppData.service2 == "") {
-        AppData.service2 = prompt("Какой дополнительный тип услуги нужен?", "addition");
-      }
+     do {
+      AppData.screenPrice = prompt("Сколько будет стоить данная работа?", 25000);
+      AppData.screenPrice = parseFloat(AppData.screenPrice)
+    } while(!AppData.isNumber(AppData.screenPrice) || AppData.screenPrice === null );
+
+
+    for (let i = 0; i < 2; i++) {
+      let name 
+      let price = 0
+
+      do {
+        name = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные")
+      } while (AppData.isNumber(name) || name === null || name.trim() === "")
+
+      do {
+        price = prompt("Сколько будет стоить данная работа?", 25000);
+        price = parseFloat(price);
+      } while(!AppData.isNumber(price) || price === null);
+
+      AppData.screens.push({id: i, name: name, price: price});
     }
 
-    do {
-      current = prompt("Сколько будет стоить данная работа?", 15000);
-      current = parseFloat(current)
-    } while(!isNumber(current) || current === null );
-    sum = sum + current
-  }
-  return sum
+
+    for (let i = 0; i < 2; i++) {
+      let name 
+      let price = 0
+
+      do {
+        name = prompt("Какой дополнительный тип услуги нужен?", "addition");
+      } while (AppData.isNumber(name) || name === null || name.trim() === "")
+  
+      do {
+        price = prompt("Сколько будет стоить данная работа?", 15000);
+        price = parseFloat(price)
+      } while(!AppData.isNumber(price) || price === null );
+
+      AppData.services[name] = +price
+    }
+  
+
+    AppData.adaptive = confirm("Нужен ли адаптив на сайте?")
+  },
+
+  addPrices: function() {
+    for (let screen of AppData.screens) {
+      AppData.screenPrice += +screen.price
+    }
+
+    for (let key in AppData.services) {
+      AppData.allServicePrices += AppData.services[key]
+    }
+  },
+
+  start: function() {
+    AppData.asking();
+    AppData.addPrices();
+    AppData.getFullPrice();
+    AppData.getServicePercentPrices();
+    AppData.getTitle();
+    
+    AppData.logger()
+  }, 
 }
 
-const getRollbackMessage = function(price) {
-  switch (true) {
-    case price >= 30000:
-     return "Даем скидку в 10%"
-    case price >= 15000 && price < 30000:
-     return "Даем скидку в 5%"
-    case price > 0 && price < 15000:
-     return "Скидка не предусмотрена"
-    default:
-     return "Что то пошло не так"
-  }
-}
+
+AppData.start();
 
 
-const getFullPrice =  function() {
-  return AppData.screenPrice + AppData.allServicePrices
-}
-
-const getTitle = function(title) {
-  title = title.trim().toLowerCase() 
-  title = title[0].toUpperCase() + title.slice(1)
-  return title
-}
-
-const getServicePercentPrices = function() {
- return AppData.fullPrice - (AppData.fullPrice * (AppData.rollback / 100)); 
-}
 
 
-AppData.start()
 
 
 

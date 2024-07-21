@@ -1,6 +1,16 @@
 'use strict';
 
 
+const title = document.getElementsByTagName("h1")[0]
+const buttons = document.getElementsByClassName("handler_btn")
+const plus = document.querySelector(".screen-btn")
+const classPercent = document.querySelectorAll(".other-items.percent")
+const classNumber = document.querySelectorAll(".other-items.number")
+const input = document.querySelector(".rollback > div > input")
+const span = document.querySelector(".rollback > div > span.range-value")
+const inputsTotal = [...document.getElementsByClassName("total-input")]
+let screenBlocks = document.querySelectorAll(".screen")
+
 const AppData = {
   title: '',
   screens: [],
@@ -44,15 +54,6 @@ const AppData = {
    AppData.servicePercentPrice =  AppData.fullPrice - (AppData.fullPrice * (AppData.rollback / 100)); 
   },
 
-  logger: function() {
-    for (let key in AppData) {
-      console.log("key: " + key + " " + "value: " + " " + AppData[key]); 
-    }
-    console.log(AppData.fullPrice);
-    console.log(AppData.servicePercentPrice);
-    console.log(AppData.services);
-    console.log(AppData.screens);
-  },
 
   asking: function() {
     do {
@@ -95,7 +96,7 @@ const AppData = {
         price = parseFloat(price)
       } while(!AppData.isNumber(price) || price === null );
 
-      AppData.services[name] = +price
+      AppData.services[name + " " + i] = +price
     }
   
 
@@ -103,13 +104,25 @@ const AppData = {
   },
 
   addPrices: function() {
-    for (let screen of AppData.screens) {
-      AppData.screenPrice += +screen.price
-    }
+    AppData.screenPrice += AppData.screens.reduce(function(sum, current) {
+      return sum + current.price;
+    }, 0);
 
     for (let key in AppData.services) {
       AppData.allServicePrices += AppData.services[key]
     }
+  },
+
+  logger: function() {
+    // for (let key in AppData) {
+    //   console.log("key: " + key + " " + "value: " + " " + AppData[key]); 
+    // }
+    console.log(AppData.fullPrice);
+    console.log(AppData.servicePercentPrice);
+    console.log(AppData.services);
+    console.log(AppData.screens);
+    console.log(AppData.screenPrice);
+    
   },
 
   start: function() {
@@ -125,6 +138,20 @@ const AppData = {
 
 
 AppData.start();
+
+let loggerDOM = function() {
+  console.log(title);
+  console.log(buttons);
+  console.log(plus);
+  console.log(classPercent);
+  console.log(classNumber);
+  console.log(input);
+  console.log(span);
+  console.log(inputsTotal);
+  console.log(screenBlocks);
+}
+
+loggerDOM();
 
 
 

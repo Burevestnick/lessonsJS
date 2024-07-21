@@ -139,19 +139,19 @@ const AppData = {
 
 AppData.start();
 
-let loggerDOM = function() {
-  console.log(title);
-  console.log(buttons);
-  console.log(plus);
-  console.log(classPercent);
-  console.log(classNumber);
-  console.log(input);
-  console.log(span);
-  console.log(inputsTotal);
-  console.log(screenBlocks);
-}
+// let loggerDOM = function() {
+//   console.log(title);
+//   console.log(buttons);
+//   console.log(plus);
+//   console.log(classPercent);
+//   console.log(classNumber);
+//   console.log(input);
+//   console.log(span);
+//   console.log(inputsTotal);
+//   console.log(screenBlocks);
+// }
 
-loggerDOM();
+// loggerDOM();
 
 
 

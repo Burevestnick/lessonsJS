@@ -1,6 +1,20 @@
 'use strict';
 
 
+const title = document.getElementsByTagName("h1")[0]
+
+const startBtn = document.getElementsByClassName("handler_btn")[0]
+const resetBtn = document.getElementsByClassName("handler_btn")[1]
+
+const plus = document.querySelector(".screen-btn")
+const classPercent = document.querySelectorAll(".other-items.percent")
+const classNumber = document.querySelectorAll(".other-items.number")
+const input = document.querySelector(".rollback > div > input")
+const span = document.querySelector(".rollback > div > span.range-value")
+const inputsTotal = [...document.getElementsByClassName("total-input")]
+
+let screens = document.querySelectorAll(".screen")
+
 const AppData = {
   title: '',
   screens: [],
@@ -11,7 +25,26 @@ const AppData = {
   servicePercentPrice: 0,
   allServicePrices: 0,
   services: {},
-  
+  init: function () {
+    AppData.addTitle()
+    startBtn.addEventListener('click', AppData.start)
+  },
+
+  addTitle: function() {
+    document.title = title.textContent
+  }, 
+
+  start: function() {
+    alert('start is running!')
+    // AppData.asking();
+    // AppData.addPrices();
+    // AppData.getFullPrice();
+    // AppData.getServicePercentPrices();
+    // AppData.getTitle();
+    
+    // AppData.logger()
+  }, 
+
   isNumber: function(num) {
     return !isNaN(parseFloat(num)) && isFinite(num)
   },
@@ -115,46 +148,29 @@ const AppData = {
     
   },
 
-  start: function() {
-    AppData.asking();
-    AppData.addPrices();
-    AppData.getFullPrice();
-    AppData.getServicePercentPrices();
-    AppData.getTitle();
-    
-    AppData.logger()
-  }, 
+  
 }
 
 
-AppData.start();
-
-const title = document.getElementsByTagName("h1")[0]
-const buttons = document.getElementsByClassName("handler_btn")
-const plus = document.querySelector(".screen-btn")
-const classPercent = document.querySelectorAll(".other-items.percent")
-const classNumber = document.querySelectorAll(".other-items.number")
-const input = document.querySelector(".rollback > div > input")
-const span = document.querySelector(".rollback > div > span.range-value")
-const inputsTotal = [...document.getElementsByClassName("total-input")]
-let screenBlocks = document.querySelectorAll(".screen")
+AppData.init();
 
 
 
 
-let loggerDOM = function() {
-  console.log(title);
-  console.log(buttons);
-  console.log(plus);
-  console.log(classPercent);
-  console.log(classNumber);
-  console.log(input);
-  console.log(span);
-  console.log(inputsTotal);
-  console.log(screenBlocks);
-}
 
-loggerDOM();
+// let loggerDOM = function() {
+//   console.log(title);
+//   console.log(buttons);
+//   console.log(plus);
+//   console.log(classPercent);
+//   console.log(classNumber);
+//   console.log(input);
+//   console.log(span);
+//   console.log(inputsTotal);
+//   console.log(screenBlocks);
+// }
+
+// loggerDOM();
 
 
 

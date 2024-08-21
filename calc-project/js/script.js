@@ -34,14 +34,35 @@ const AppData = {
   ServicePricesNumber: 0,
   servicesPercent: {},
   servicesNumber: {},
+
   init: function () {
     AppData.addTitle()
 
     startBtn.addEventListener('click', AppData.start)
+    
     plusBtn.addEventListener('click', AppData.addScreenblock)
     rollbackRange.addEventListener('input', AppData.getRollback)
   },
 
+  checkInputs: function() {
+    let i = 0
+    while (i < AppData.screens.length) {
+      if (AppData.screens[i].count === 0 || AppData.screens[i].name === "Тип экранов") {
+        alert("введите тип и количество экранов")
+        AppData.screens = []
+        AppData.screenPrice = 0
+        AppData.totalScreens
+        AppData.ServicePricesPercent = 0
+        AppData.ServicePricesNumber = 0
+        AppData.fullPrice = 0
+        AppData.servicePercentPrice = 0
+        AppData.totalScreens = 0
+      } else {
+        i++
+      }
+    }
+  },
+  
   addTitle: function() {
     document.title = title.textContent
   }, 
@@ -61,7 +82,6 @@ const AppData = {
       if (check.checked) {
         AppData.servicesPercent[label.textContent] = +input.value
       }
-
     })
 
     otherItemsNumber.forEach(function(item) {
@@ -99,24 +119,26 @@ const AppData = {
     for (let key in AppData.servicesPercent) {
       AppData.ServicePricesPercent += AppData.screenPrice * (AppData.servicesPercent[key] / 100)
     }
-     
-
-    AppData.fullPrice = AppData.screenPrice + AppData.ServicePricesPercent + AppData.ServicePricesNumber
-
-    AppData.servicePercentPrice =  AppData.fullPrice - (AppData.fullPrice * (AppData.rollback  / 100)); 
-   
     
+    AppData.fullPrice = AppData.screenPrice + AppData.ServicePricesPercent + AppData.ServicePricesNumber
+    AppData.servicePercentPrice =  AppData.fullPrice - (AppData.fullPrice * (AppData.rollback  / 100)); 
   },
 
   getRollback: function(event) {
     span.textContent = event.target.value + " %"
     AppData.rollback = +event.target.value 
+    if (fullTotalCount.value != 0) {
+      totalCountRollback.value = AppData.fullPrice - (AppData.fullPrice * (AppData.rollback  / 100))
+    }
   },
 
   start: function() {
+
     AppData.addScreens();
     AppData.addServices();
     AppData.addPrices();
+    AppData.checkInputs();
+    
     
     // AppData.logger()
     console.log(AppData);
@@ -131,10 +153,8 @@ const AppData = {
       const select = screen.querySelector("select")
       const input = screen.querySelector("input")
       const selectName = select.options[select.selectedIndex].textContent
-
-      console.dir(input);
       
-
+      
       AppData.screens.push({
         id: index, 
         name: selectName, 
@@ -158,19 +178,19 @@ const AppData = {
   },
 
 
-  logger: function() {
-    console.log(AppData.fullPrice);
-    console.log(AppData.servicePercentPrice);
-    console.log(AppData.services);
-    console.log(AppData.screens);
-    console.log(AppData.screenPrice);
-  },
+  // logger: function() {
+  //   console.log(AppData.fullPrice);
+  //   console.log(AppData.servicePercentPrice);
+  //   console.log(AppData.services);
+  //   console.log(AppData.screens);
+  //   console.log(AppData.screenPrice);
+  // },
 }
 
 
 AppData.init();
 
-// 1) Запретить нажатие кнопки Рассчитать если не выбран ни один тип экрана в выпадающем списке и не введено их количество. Учесть что блоков с типом экранов может быть несколько, но пустых (незаполненных) элементов быть не должно
+// 1) Запретить нажатие кнопки Рассчитать если не выбран ни один тип экрана в выпадающем списке и не введено их количество. Учесть что блоков с типом экранов может быть несколько, но пустых (незаполненных) элементов быть не должно ))
 
 
 

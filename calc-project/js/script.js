@@ -20,7 +20,6 @@ const totalCountRollback = document.querySelectorAll(".total-input")[4]
 
 const CMSBlock = document.querySelector("#cms-open")
 
-
 let screens = document.querySelectorAll(".screen")
 let optionsCMS = document.querySelectorAll('[name=views-select]')[1];
 
@@ -137,6 +136,8 @@ const AppData = {
     fullTotalCount.value = 0
     totalCountRollback.value = 0
 
+    span.textContent = 0 + " %"
+    this.rollback = 0 
     this.screenPrice = 0
     this.totalScreens = 0
     this.ServicePricesPercent = 0
@@ -281,7 +282,7 @@ const AppData = {
     span.textContent = event.target.value + " %"
     AppData.rollback = +event.target.value 
     if (fullTotalCount.value != 0) {
-      totalCountRollback.value = AppData.fullPrice - (AppData.fullPrice * (AppData.rollback  / 100))
+      totalCountRollback.value = AppData.fullPrice - (AppData.fullPrice * (AppData.rollback  / 100)) 
     }
   },
 
